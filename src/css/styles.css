@@ -1419,7 +1419,7 @@ body.romeria-theme {
     color: var(--romeria-crema);
 }
 
-/* === Contenedor de flores (solo tema romería) === */
+/* === Contenedor de flores (desactivado) === */
 .flowers-container {
     position: fixed;
     top: 0;
@@ -1432,8 +1432,9 @@ body.romeria-theme {
     z-index: 0;
 }
 
+/* Flores desactivadas en tema romería */
 body.romeria-theme .flowers-container {
-    opacity: 1;
+    opacity: 0;
 }
 
 .flower {
