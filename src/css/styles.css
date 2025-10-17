@@ -28,8 +28,9 @@
     --constelacion: #94A3B8;
     --destello: #FFE8B3;
 
-    /* Tema Invernal - Colores suaves y fríos */
+    /* Tema Invernal - Colores suaves con acentos fuertes */
     --invierno-azul-oscuro: #2C5F7C;
+    --invierno-azul-profundo: #1A3A52;
     --invierno-azul-medio: #4A90B8;
     --invierno-azul-claro: #7FB3D5;
     --invierno-azul-hielo: #A8D5E2;
@@ -39,6 +40,8 @@
     --invierno-crema: #F5F7FA;
     --invierno-gris-suave: #95A5A6;
     --invierno-lavanda: #B8C5D9;
+    --invierno-rojo: #C94B4B;
+    --invierno-verde-pino: #2D5F4F;
 
     /* Tema Romería - Colores tierra festivos */
     --romeria-terracota: #C5705D;
@@ -1066,10 +1069,10 @@ body.christmas-theme .background-image {
     pointer-events: none;
 }
 
-/* Tema Navideño - Fondo festivo con gradiente azul-oscuro-azul-medio */
+/* Tema Navideño - Fondo festivo con gradiente azul profundo */
 body.christmas-theme {
     background:
-        linear-gradient(135deg, var(--invierno-azul-oscuro) 0%, var(--invierno-azul-medio) 100%);
+        linear-gradient(135deg, var(--invierno-azul-profundo) 0%, var(--invierno-azul-oscuro) 50%, var(--invierno-azul-medio) 100%);
     color: var(--invierno-crema);
 }
 
@@ -1143,21 +1146,33 @@ body.christmas-theme .christmas-lights {
     animation: blink 1.5s infinite;
 }
 
-.light:nth-child(3n+1) {
-    background: var(--invierno-azul-hielo);
-    box-shadow: 0 0 20px var(--invierno-azul-hielo);
+.light:nth-child(5n+1) {
+    background: var(--invierno-rojo);
+    box-shadow: 0 0 20px var(--invierno-rojo);
 }
 
-.light:nth-child(3n+2) {
-    background: var(--invierno-azul-claro);
-    box-shadow: 0 0 20px var(--invierno-azul-claro);
-    animation-delay: 0.5s;
+.light:nth-child(5n+2) {
+    background: var(--invierno-verde-pino);
+    box-shadow: 0 0 20px var(--invierno-verde-pino);
+    animation-delay: 0.3s;
 }
 
-.light:nth-child(3n) {
+.light:nth-child(5n+3) {
+    background: var(--invierno-azul-medio);
+    box-shadow: 0 0 20px var(--invierno-azul-medio);
+    animation-delay: 0.6s;
+}
+
+.light:nth-child(5n+4) {
     background: var(--invierno-plateado);
     box-shadow: 0 0 20px var(--invierno-plateado);
-    animation-delay: 1s;
+    animation-delay: 0.9s;
+}
+
+.light:nth-child(5n) {
+    background: var(--invierno-azul-hielo);
+    box-shadow: 0 0 20px var(--invierno-azul-hielo);
+    animation-delay: 1.2s;
 }
 
 @keyframes blink {
@@ -1167,7 +1182,7 @@ body.christmas-theme .christmas-lights {
 
 /* === SIDEBAR - Tema Navideño === */
 body.christmas-theme .sidebar {
-    background: rgba(44, 95, 124, 0.95);
+    background: rgba(26, 58, 82, 0.95);
     border-right: 2px solid var(--invierno-plateado);
     box-shadow: 2px 0 20px rgba(192, 197, 206, 0.3);
 }
@@ -1177,13 +1192,13 @@ body.christmas-theme .sidebar-header {
 }
 
 body.christmas-theme .new-chat-btn {
-    background: linear-gradient(135deg, var(--invierno-azul-oscuro), var(--invierno-azul-hielo));
-    box-shadow: 0 4px 12px rgba(74, 144, 184, 0.4);
+    background: linear-gradient(135deg, var(--invierno-verde-pino), var(--invierno-azul-medio));
+    box-shadow: 0 4px 12px rgba(45, 95, 79, 0.5);
 }
 
 body.christmas-theme .new-chat-btn:hover {
-    box-shadow: 0 6px 20px rgba(74, 144, 184, 0.6);
-    background: var(--invierno-azul-oscuro);
+    box-shadow: 0 6px 20px rgba(45, 95, 79, 0.7);
+    background: var(--invierno-verde-pino);
 }
 
 body.christmas-theme .chat-history-item {
@@ -1353,12 +1368,13 @@ body.christmas-theme .message-input::placeholder {
 }
 
 body.christmas-theme .send-button {
-    background: linear-gradient(135deg, var(--invierno-azul-oscuro), var(--invierno-azul-hielo));
-    box-shadow: 0 4px 12px rgba(74, 144, 184, 0.4);
+    background: linear-gradient(135deg, var(--invierno-rojo), var(--invierno-azul-medio));
+    box-shadow: 0 4px 12px rgba(201, 75, 75, 0.5);
 }
 
 body.christmas-theme .send-button:hover:not(:disabled) {
-    box-shadow: 0 6px 20px rgba(74, 144, 184, 0.6);
+    box-shadow: 0 6px 20px rgba(201, 75, 75, 0.7);
+    background: var(--invierno-rojo);
 }
 
 body.christmas-theme .input-footer {
