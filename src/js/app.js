@@ -17,6 +17,9 @@ let isProcessing = false;
 let currentTheme = localStorage.getItem('theme') || 'light';
 let sessionId = localStorage.getItem('sessionId') || generateSessionId();
 
+// Theme order: light -> dark -> christmas -> light
+const themes = ['light', 'dark', 'christmas'];
+
 // API Configuration
 const API_URL = window.location.origin + '/api/chat';
 
@@ -29,6 +32,7 @@ function generateSessionId() {
 
 // Initialize theme
 document.body.classList.toggle('dark-theme', currentTheme === 'dark');
+document.body.classList.toggle('christmas-theme', currentTheme === 'christmas');
 
 // Event Listeners
 sendButton.addEventListener('click', handleSendMessage);
@@ -51,14 +55,25 @@ suggestionCards.forEach(card => {
 
 // === THEME MANAGEMENT ===
 function toggleTheme() {
-    currentTheme = currentTheme === 'light' ? 'dark' : 'light';
-    document.body.classList.toggle('dark-theme');
-    localStorage.setItem('theme', currentTheme);
+    // Cycle through themes: light -> dark -> christmas -> light
+    const currentIndex = themes.indexOf(currentTheme);
+    const nextIndex = (currentIndex + 1) % themes.length;
+    currentTheme = themes[nextIndex];
 
-    // Generate stars when switching to dark theme
+    // Remove all theme classes
+    document.body.classList.remove('dark-theme', 'christmas-theme');
+
+    // Add appropriate theme class
     if (currentTheme === 'dark') {
+        document.body.classList.add('dark-theme');
         generateStars();
+    } else if (currentTheme === 'christmas') {
+        document.body.classList.add('christmas-theme');
+        generateSnow();
+        generateChristmasLights();
     }
+
+    localStorage.setItem('theme', currentTheme);
 }
 
 // Generate animated stars for dark theme
@@ -81,9 +96,54 @@ function generateStars() {
     }
 }
 
-// Initialize stars if starting in dark mode
+// Generate snow for Christmas theme
+function generateSnow() {
+    const snowContainer = document.getElementById('snow-container');
+    snowContainer.innerHTML = '';
+    const numberOfSnowflakes = 50;
+
+    for (let i = 0; i < numberOfSnowflakes; i++) {
+        const snowflake = document.createElement('div');
+        snowflake.className = 'snowflake';
+        snowflake.innerHTML = '❄';
+
+        // Random position
+        snowflake.style.left = Math.random() * 100 + '%';
+
+        // Random size
+        const size = 0.5 + Math.random() * 1;
+        snowflake.style.fontSize = size + 'em';
+
+        // Random animation duration (slower = more realistic)
+        const duration = 10 + Math.random() * 20;
+        snowflake.style.animationDuration = duration + 's';
+
+        // Random animation delay
+        snowflake.style.animationDelay = Math.random() * 10 + 's';
+
+        snowContainer.appendChild(snowflake);
+    }
+}
+
+// Generate Christmas lights
+function generateChristmasLights() {
+    const lightsContainer = document.getElementById('christmas-lights');
+    lightsContainer.innerHTML = '';
+    const numberOfLights = 30;
+
+    for (let i = 0; i < numberOfLights; i++) {
+        const light = document.createElement('div');
+        light.className = 'light';
+        lightsContainer.appendChild(light);
+    }
+}
+
+// Initialize decorations based on starting theme
 if (currentTheme === 'dark') {
     generateStars();
+} else if (currentTheme === 'christmas') {
+    generateSnow();
+    generateChristmasLights();
 }
 
 // === MESSAGE HANDLING ===

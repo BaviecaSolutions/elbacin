@@ -27,6 +27,18 @@
     --luna: #C9D1E8;
     --constelacion: #94A3B8;
     --destello: #FFE8B3;
+
+    /* Tema Navideño */
+    --navidad-rojo: #C41E3A;
+    --navidad-verde: #165B33;
+    --navidad-verde-oscuro: #0F3D22;
+    --navidad-dorado: #D4AF37;
+    --navidad-blanco-nieve: #F8F9FA;
+    --navidad-crema: #FFF8DC;
+    --navidad-rojo-claro: #E74C3C;
+    --navidad-verde-claro: #27AE60;
+    --navidad-azul-frio: #5DADE2;
+    --navidad-plateado: #C0C0C0;
 }
 
 /* Tema por defecto (Claro) */
@@ -1030,4 +1042,338 @@ body.dark-theme .chat-history::-webkit-scrollbar-thumb:hover {
     .toggle-text {
         display: none;
     }
+}
+
+/* ===================================
+   TEMA NAVIDEÑO
+   =================================== */
+
+/* Ocultar imagen de fondo en tema navideño */
+body.christmas-theme .background-image {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Tema Navideño - Fondo festivo con gradiente rojo-verde */
+body.christmas-theme {
+    background:
+        linear-gradient(135deg, var(--navidad-rojo) 0%, var(--navidad-verde-oscuro) 100%);
+    color: var(--navidad-crema);
+}
+
+/* Ocultar estrellas en tema navideño */
+body.christmas-theme .stars-container {
+    opacity: 0;
+}
+
+/* === Contenedor de nieve (solo tema navideño) === */
+.snow-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    z-index: 0;
+}
+
+body.christmas-theme .snow-container {
+    opacity: 1;
+}
+
+.snowflake {
+    position: absolute;
+    top: -10px;
+    color: white;
+    font-size: 1em;
+    animation: snowfall linear infinite;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes snowfall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0.3;
+    }
+}
+
+/* === Luces navideñas === */
+.christmas-lights {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    z-index: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+}
+
+body.christmas-theme .christmas-lights {
+    opacity: 1;
+}
+
+.light {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    animation: blink 1.5s infinite;
+}
+
+.light:nth-child(3n+1) {
+    background: var(--navidad-rojo-claro);
+    box-shadow: 0 0 20px var(--navidad-rojo-claro);
+}
+
+.light:nth-child(3n+2) {
+    background: var(--navidad-verde-claro);
+    box-shadow: 0 0 20px var(--navidad-verde-claro);
+    animation-delay: 0.5s;
+}
+
+.light:nth-child(3n) {
+    background: var(--navidad-dorado);
+    box-shadow: 0 0 20px var(--navidad-dorado);
+    animation-delay: 1s;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(0.9); }
+}
+
+/* === SIDEBAR - Tema Navideño === */
+body.christmas-theme .sidebar {
+    background: rgba(15, 61, 34, 0.95);
+    border-right: 2px solid var(--navidad-dorado);
+    box-shadow: 2px 0 20px rgba(212, 175, 55, 0.3);
+}
+
+body.christmas-theme .sidebar-header {
+    border-bottom: 1px solid var(--navidad-dorado);
+}
+
+body.christmas-theme .new-chat-btn {
+    background: linear-gradient(135deg, var(--navidad-rojo), var(--navidad-rojo-claro));
+    box-shadow: 0 4px 12px rgba(196, 30, 58, 0.4);
+}
+
+body.christmas-theme .new-chat-btn:hover {
+    box-shadow: 0 6px 20px rgba(196, 30, 58, 0.6);
+    background: var(--navidad-rojo);
+}
+
+body.christmas-theme .chat-history-item {
+    color: var(--navidad-crema);
+}
+
+body.christmas-theme .chat-history-item:hover {
+    background: rgba(212, 175, 55, 0.2);
+}
+
+body.christmas-theme .chat-history-item.active {
+    background: rgba(212, 175, 55, 0.3);
+    color: var(--navidad-dorado);
+}
+
+body.christmas-theme .sidebar-footer {
+    border-top: 1px solid var(--navidad-dorado);
+}
+
+/* === MAP LINK - Tema Navideño === */
+body.christmas-theme .map-link-btn {
+    background: linear-gradient(135deg, var(--navidad-verde), var(--navidad-verde-claro));
+    color: var(--navidad-blanco-nieve);
+    box-shadow: 0 2px 8px rgba(22, 91, 51, 0.4);
+}
+
+body.christmas-theme .map-link-btn:hover {
+    box-shadow: 0 4px 12px rgba(22, 91, 51, 0.6);
+}
+
+/* === THEME TOGGLE - Tema Navideño === */
+body.christmas-theme .theme-toggle {
+    background: linear-gradient(135deg, var(--navidad-rojo), var(--navidad-verde));
+    color: var(--navidad-blanco-nieve);
+    box-shadow: 0 2px 8px rgba(196, 30, 58, 0.4);
+}
+
+body.christmas-theme .theme-toggle:hover {
+    box-shadow: 0 4px 12px rgba(196, 30, 58, 0.6);
+}
+
+body.christmas-theme .avatar {
+    background: linear-gradient(135deg, var(--navidad-rojo), var(--navidad-dorado));
+    box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
+}
+
+body.christmas-theme .user-profile:hover {
+    background: rgba(212, 175, 55, 0.2);
+}
+
+/* === HEADER - Tema Navideño === */
+body.christmas-theme .chat-header {
+    background: rgba(15, 61, 34, 0.95);
+    border-bottom: 2px solid var(--navidad-dorado);
+    box-shadow: 0 2px 15px rgba(212, 175, 55, 0.3);
+}
+
+body.christmas-theme .menu-toggle {
+    color: var(--navidad-crema);
+}
+
+body.christmas-theme .header-title {
+    color: var(--navidad-dorado);
+    text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+}
+
+body.christmas-theme .icon-btn {
+    color: var(--navidad-dorado);
+}
+
+body.christmas-theme .icon-btn:hover {
+    background: rgba(212, 175, 55, 0.2);
+    color: var(--navidad-rojo-claro);
+}
+
+/* === WELCOME SCREEN - Tema Navideño === */
+body.christmas-theme .welcome-icon {
+    background: linear-gradient(135deg, var(--navidad-rojo), var(--navidad-verde));
+    box-shadow: 0 8px 30px rgba(196, 30, 58, 0.4), 0 0 40px rgba(212, 175, 55, 0.3);
+}
+
+body.christmas-theme .welcome-title {
+    color: var(--navidad-dorado);
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+}
+
+body.christmas-theme .welcome-subtitle {
+    color: var(--navidad-crema);
+}
+
+/* === SUGGESTION CARDS - Tema Navideño === */
+body.christmas-theme .suggestion-card {
+    background: rgba(15, 61, 34, 0.6);
+    border: 2px solid rgba(212, 175, 55, 0.4);
+    color: var(--navidad-crema);
+    box-shadow: 0 4px 20px rgba(196, 30, 58, 0.3);
+}
+
+body.christmas-theme .suggestion-card::before {
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
+}
+
+body.christmas-theme .suggestion-card i {
+    color: var(--navidad-dorado);
+}
+
+body.christmas-theme .suggestion-card:hover {
+    box-shadow: 0 10px 35px rgba(196, 30, 58, 0.5);
+    border-color: var(--navidad-dorado);
+}
+
+/* === MESSAGES - Tema Navideño === */
+body.christmas-theme .message-sender {
+    color: var(--navidad-dorado);
+}
+
+body.christmas-theme .message-avatar.user {
+    background: var(--navidad-rojo);
+    box-shadow: 0 2px 10px rgba(196, 30, 58, 0.4);
+}
+
+body.christmas-theme .message-avatar.assistant {
+    background: var(--navidad-verde);
+    box-shadow: 0 2px 10px rgba(22, 91, 51, 0.4);
+}
+
+body.christmas-theme .message-content {
+    color: var(--navidad-crema);
+    background: rgba(15, 61, 34, 0.5);
+    border-left: 3px solid var(--navidad-dorado);
+    box-shadow: 0 2px 15px rgba(196, 30, 58, 0.2);
+}
+
+body.christmas-theme .message-content code {
+    background: rgba(212, 175, 55, 0.2);
+    color: var(--navidad-dorado);
+}
+
+/* === TYPING INDICATOR - Tema Navideño === */
+body.christmas-theme .typing-indicator span {
+    background: var(--navidad-dorado);
+}
+
+/* === INPUT AREA - Tema Navideño === */
+body.christmas-theme .input-container {
+    background: rgba(15, 61, 34, 0.9);
+    border-top: 1px solid var(--navidad-dorado);
+}
+
+body.christmas-theme .input-wrapper {
+    background: rgba(22, 91, 51, 0.6);
+    border: 2px solid var(--navidad-dorado);
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+}
+
+body.christmas-theme .input-wrapper:focus-within {
+    border-color: var(--navidad-rojo-claro);
+    box-shadow: 0 6px 30px rgba(196, 30, 58, 0.4);
+}
+
+body.christmas-theme .message-input {
+    color: var(--navidad-crema);
+}
+
+body.christmas-theme .message-input::placeholder {
+    color: var(--navidad-plateado);
+}
+
+body.christmas-theme .send-button {
+    background: linear-gradient(135deg, var(--navidad-rojo), var(--navidad-rojo-claro));
+    box-shadow: 0 4px 12px rgba(196, 30, 58, 0.4);
+}
+
+body.christmas-theme .send-button:hover:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(196, 30, 58, 0.6);
+}
+
+body.christmas-theme .input-footer {
+    color: var(--navidad-plateado);
+}
+
+/* === SCROLLBAR - Tema Navideño === */
+body.christmas-theme .chat-container::-webkit-scrollbar-thumb,
+body.christmas-theme .chat-history::-webkit-scrollbar-thumb {
+    background: rgba(212, 175, 55, 0.4);
+}
+
+body.christmas-theme .chat-container::-webkit-scrollbar-thumb:hover,
+body.christmas-theme .chat-history::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 175, 55, 0.6);
+}
+
+/* === Theme Icon Management === */
+.theme-icon-christmas {
+    display: none;
+}
+
+body.christmas-theme .theme-icon-light,
+body.christmas-theme .theme-icon-dark {
+    display: none;
+}
+
+body.christmas-theme .theme-icon-christmas {
+    display: inline;
 }
