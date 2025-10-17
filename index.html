@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat La Mancha</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="src/css/styles.css">
+</head>
+<body>
+    <!-- Imagen de fondo (solo tema claro) -->
+    <div class="background-image" style="background-image: url('images/fondo_uvas.jpg');"></div>
+
+
+    <!-- Estrellas animadas (solo visible en tema oscuro) -->
+    <div class="stars-container" id="stars-container"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <button class="new-chat-btn">
+                <i class="fas fa-plus"></i>
+                <span>Nueva conversación</span>
+            </button>
+        </div>
+
+        <div class="chat-history">
+            <div class="chat-history-item active">
+                <i class="fas fa-message"></i>
+                <span>Conversación de La Mancha</span>
+            </div>
+            <div class="chat-history-item">
+                <i class="fas fa-sun"></i>
+                <span>Campos de Castilla</span>
+            </div>
+            <div class="chat-history-item">
+                <i class="fas fa-moon"></i>
+                <span>Noches estrelladas</span>
+            </div>
+        </div>
+
+        <div class="sidebar-footer">
+            <!-- Toggle de tema -->
+            <div class="theme-toggle-container">
+                <button class="theme-toggle" id="theme-toggle" title="Cambiar tema">
+                    <i class="fas fa-sun theme-icon-light"></i>
+                    <i class="fas fa-moon theme-icon-dark"></i>
+                    <span class="toggle-text">Cambiar tema</span>
+                </button>
+            </div>
+
+            <div class="user-profile">
+                <div class="avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <span>Viajero Manchego</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Chat Area -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="chat-header">
+            <button class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h1 class="header-title">
+                <i class="fas fa-wind-turbine mr-2"></i>
+                Chat La Mancha
+            </h1>
+            <div class="header-actions">
+                <button class="icon-btn theme-toggle-mobile" id="theme-toggle-mobile" title="Cambiar tema">
+                    <i class="fas fa-sun theme-icon-light"></i>
+                    <i class="fas fa-moon theme-icon-dark"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Chat Container -->
+        <div class="chat-container" id="chat-container">
+            <!-- Welcome Screen -->
+            <div class="welcome-screen" id="welcome-screen">
+                <div class="welcome-icon">
+                    <i class="fas fa-wind-turbine"></i>
+                </div>
+                <h2 class="welcome-title">Bienvenido a los campos de La Mancha</h2>
+                <p class="welcome-subtitle">¿En qué puedo ayudarte hoy?</p>
+
+                <div class="suggestions-grid">
+                    <button class="suggestion-card">
+                        <i class="fas fa-book-open"></i>
+                        <span>Cuéntame historias de Castilla</span>
+                    </button>
+                    <button class="suggestion-card">
+                        <i class="fas fa-wheat-awn"></i>
+                        <span>Habla sobre los campos</span>
+                    </button>
+                    <button class="suggestion-card">
+                        <i class="fas fa-landmark"></i>
+                        <span>Cultura manchega</span>
+                    </button>
+                    <button class="suggestion-card">
+                        <i class="fas fa-star"></i>
+                        <span>Mira las estrellas</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Messages will appear here -->
+            <div class="messages-wrapper" id="messages-wrapper"></div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="input-container">
+            <div class="input-wrapper">
+                <textarea
+                    id="message-input"
+                    class="message-input"
+                    placeholder="Escribe tu mensaje..."
+                    rows="1"
+                ></textarea>
+                <button id="send-button" class="send-button" disabled>
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            <p class="input-footer">
+                Inspirado en los paisajes de Castilla-La Mancha
+            </p>
+        </div>
+    </main>
+
+    <script src="src/js/app.js"></script>
+</body>
+</html>

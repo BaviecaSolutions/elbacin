@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de Tomelloso - Chat La Mancha</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Tema Claro - Blanco y Añil */
+            --blanco: #FFFFFF;
+            --blanco-suave: #F8F9FA;
+            --anil: #1E3A8A;
+            --anil-claro: #3B82F6;
+            --anil-oscuro: #1E40AF;
+            --text-anil: #1E3A8A;
+            --text-anil-secondary: #3B82F6;
+
+            /* Tema Oscuro - Cielo Nocturno */
+            --noche-bg: #0F172A;
+            --noche-medio: #1E293B;
+            --horizonte: #334155;
+            --nebula: #475569;
+            --estrella: #E8E8F0;
+            --luna: #C9D1E8;
+            --constelacion: #94A3B8;
+            --destello: #FFE8B3;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            background:
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 40px,
+                    var(--anil-muy-claro) 40px,
+                    var(--anil-muy-claro) 41px
+                ),
+                linear-gradient(135deg, var(--blanco) 0%, var(--blanco-suave) 100%);
+            color: var(--text-anil);
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        body.dark-theme {
+            background:
+                radial-gradient(circle at 20% 30%, rgba(148, 163, 184, 0.05) 1px, transparent 1px),
+                radial-gradient(circle at 80% 70%, rgba(148, 163, 184, 0.05) 1px, transparent 1px),
+                radial-gradient(circle at 40% 80%, rgba(148, 163, 184, 0.05) 1px, transparent 1px),
+                radial-gradient(circle at 90% 20%, rgba(148, 163, 184, 0.05) 1px, transparent 1px),
+                linear-gradient(135deg, var(--noche-bg) 0%, var(--noche-medio) 50%, var(--horizonte) 100%);
+            background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+            color: var(--estrella);
+        }
+
+        /* Estrellas animadas (solo tema oscuro) */
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            z-index: 0;
+        }
+
+        body.dark-theme .stars-container {
+            opacity: 1;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--estrella);
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+            box-shadow: 0 0 3px var(--estrella);
+        }
+
+        .star.bright {
+            width: 3px;
+            height: 3px;
+            box-shadow: 0 0 8px var(--destello), 0 0 12px var(--destello);
+            animation: twinkle 2s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Header */
+        .header {
+            position: relative;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 15px rgba(30, 58, 138, 0.1);
+            border-bottom: 2px solid var(--anil);
+        }
+
+        body.dark-theme .header {
+            background: rgba(30, 41, 59, 0.95);
+            box-shadow: 0 2px 20px rgba(15, 23, 42, 0.5);
+            border-bottom: 2px solid var(--constelacion);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-icon {
+            font-size: 32px;
+            color: var(--anil);
+        }
+
+        body.dark-theme .header-icon {
+            color: var(--destello);
+        }
+
+        .header-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 30px;
+            font-weight: 700;
+            color: var(--anil);
+            letter-spacing: 0.5px;
+        }
+
+        body.dark-theme .header-title {
+            color: var(--estrella);
+        }
+
+        .header-subtitle {
+            font-size: 14px;
+            color: var(--text-anil-secondary);
+            margin-top: 2px;
+        }
+
+        body.dark-theme .header-subtitle {
+            color: var(--constelacion);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .back-btn, .theme-toggle {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn {
+            background: var(--anil);
+            color: white;
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+        }
+
+        body.dark-theme .back-btn {
+            background: var(--nebula);
+            box-shadow: 0 4px 12px rgba(71, 85, 105, 0.4);
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(30, 58, 138, 0.4);
+            background: var(--anil-oscuro);
+        }
+
+        body.dark-theme .back-btn:hover {
+            box-shadow: 0 6px 18px rgba(71, 85, 105, 0.6);
+        }
+
+        .theme-toggle {
+            background: var(--anil-claro);
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        body.dark-theme .theme-toggle {
+            background: var(--horizonte);
+            color: var(--estrella);
+            box-shadow: 0 4px 12px rgba(51, 65, 85, 0.4);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+        }
+
+        .theme-icon-dark {
+            display: none;
+        }
+
+        body.dark-theme .theme-icon-light {
+            display: none;
+        }
+
+        body.dark-theme .theme-icon-dark {
+            display: inline;
+        }
+
+        /* Map Container */
+        .map-container {
+            position: relative;
+            height: calc(100vh - 82px);
+            z-index: 1;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+            border-radius: 0;
+        }
+
+        /* Mejorar contraste del mapa oscuro */
+        body.dark-theme #map {
+            filter: brightness(1.1) contrast(1.15);
+        }
+
+        body.dark-theme .leaflet-tile-pane {
+            opacity: 1;
+        }
+
+        /* Custom Leaflet Controls */
+        .leaflet-control-zoom {
+            border: 2px solid var(--anil) !important;
+            border-radius: 10px !important;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(30, 58, 138, 0.2) !important;
+        }
+
+        body.dark-theme .leaflet-control-zoom {
+            border: 2px solid var(--constelacion) !important;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.5) !important;
+        }
+
+        .leaflet-control-zoom a {
+            background-color: white !important;
+            color: var(--anil) !important;
+            border: none !important;
+            font-weight: bold !important;
+        }
+
+        body.dark-theme .leaflet-control-zoom a {
+            background-color: var(--horizonte) !important;
+            color: var(--estrella) !important;
+        }
+
+        .leaflet-control-zoom a:hover {
+            background-color: var(--anil-claro) !important;
+            color: white !important;
+        }
+
+        body.dark-theme .leaflet-control-zoom a:hover {
+            background-color: var(--nebula) !important;
+            color: var(--estrella) !important;
+        }
+
+        /* Custom Popup */
+        .leaflet-popup-content-wrapper {
+            background: white !important;
+            border: 2px solid var(--anil) !important;
+            border-radius: 12px !important;
+            box-shadow: 0 6px 20px rgba(30, 58, 138, 0.3) !important;
+            backdrop-filter: blur(10px);
+        }
+
+        body.dark-theme .leaflet-popup-content-wrapper {
+            background: rgba(30, 41, 59, 0.98) !important;
+            border: 2px solid var(--constelacion) !important;
+            box-shadow: 0 6px 25px rgba(15, 23, 42, 0.6) !important;
+        }
+
+        .leaflet-popup-content {
+            font-family: 'Inter', sans-serif !important;
+            color: var(--text-anil) !important;
+            margin: 16px !important;
+        }
+
+        body.dark-theme .leaflet-popup-content {
+            color: var(--estrella) !important;
+        }
+
+        .popup-title {
+            font-family: 'Crimson Text', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--anil);
+            margin-bottom: 8px;
+        }
+
+        body.dark-theme .popup-title {
+            color: var(--estrella);
+        }
+
+        .popup-description {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-anil-secondary);
+        }
+
+        body.dark-theme .popup-description {
+            color: var(--constelacion);
+        }
+
+        .leaflet-popup-tip {
+            background: white !important;
+            border: 2px solid var(--anil) !important;
+            border-top: none !important;
+            border-right: none !important;
+        }
+
+        body.dark-theme .leaflet-popup-tip {
+            background: rgba(30, 41, 59, 0.98) !important;
+            border: 2px solid var(--constelacion) !important;
+            border-top: none !important;
+            border-right: none !important;
+        }
+
+        .leaflet-popup-close-button {
+            color: var(--anil) !important;
+            font-size: 20px !important;
+            font-weight: bold !important;
+        }
+
+        body.dark-theme .leaflet-popup-close-button {
+            color: var(--estrella) !important;
+        }
+
+        /* Attribution */
+        .leaflet-control-attribution {
+            background: rgba(255, 255, 255, 0.9) !important;
+            color: var(--text-anil-secondary) !important;
+            font-size: 11px !important;
+            border-radius: 8px 0 0 0 !important;
+            padding: 4px 8px !important;
+        }
+
+        body.dark-theme .leaflet-control-attribution {
+            background: rgba(30, 41, 59, 0.9) !important;
+            color: var(--constelacion) !important;
+        }
+
+        .leaflet-control-attribution a {
+            color: var(--anil) !important;
+        }
+
+        body.dark-theme .leaflet-control-attribution a {
+            color: var(--estrella) !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+
+            .header-title {
+                font-size: 22px;
+            }
+
+            .header-subtitle {
+                font-size: 12px;
+            }
+
+            .back-btn span, .theme-toggle span {
+                display: none;
+            }
+
+            .back-btn, .theme-toggle {
+                padding: 10px 12px;
+            }
+
+            .map-container {
+                height: calc(100vh - 68px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Estrellas animadas -->
+    <div class="stars-container" id="stars-container"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <i class="fas fa-map-location-dot header-icon"></i>
+            <div>
+                <h1 class="header-title">Tomelloso</h1>
+                <p class="header-subtitle">Ciudad Real, Castilla-La Mancha</p>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <button class="back-btn" onclick="window.location.href='index.html'">
+                <i class="fas fa-arrow-left"></i>
+                <span>Volver al Chat</span>
+            </button>
+
+            <button class="theme-toggle" id="theme-toggle">
+                <i class="fas fa-sun theme-icon-light"></i>
+                <i class="fas fa-moon theme-icon-dark"></i>
+                <span>Cambiar tema</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Map Container -->
+    <div class="map-container">
+        <div id="map"></div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        // === THEME MANAGEMENT ===
+        let currentTheme = localStorage.getItem('theme') || 'light';
+        document.body.classList.toggle('dark-theme', currentTheme === 'dark');
+
+        const themeToggle = document.getElementById('theme-toggle');
+        const starsContainer = document.getElementById('stars-container');
+
+        themeToggle.addEventListener('click', () => {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.body.classList.toggle('dark-theme');
+            localStorage.setItem('theme', currentTheme);
+
+            // Change map tiles based on theme
+            updateMapTheme();
+
+            // Generate stars when switching to dark theme
+            if (currentTheme === 'dark') {
+                generateStars();
+            }
+        });
+
+        // Generate animated stars for dark theme
+        function generateStars() {
+            starsContainer.innerHTML = '';
+            const numberOfStars = 100;
+
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = Math.random() > 0.8 ? 'star bright' : 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Initialize stars if starting in dark mode
+        if (currentTheme === 'dark') {
+            generateStars();
+        }
+
+        // === MAP INITIALIZATION ===
+
+        // Tomelloso coordinates (general)
+        const tomellosoCoords = [39.1573, -3.0204];
+
+        // Plaza de España de Tomelloso coordinates (centro del círculo)
+        const plazaEspanaCoords = [39.1573, -3.0204];
+
+        // Initialize map
+        const map = L.map('map', {
+            center: tomellosoCoords,
+            zoom: 14,
+            zoomControl: true
+        });
+
+        // Tile layers for light and dark themes
+        const lightTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            maxZoom: 19
+        });
+
+        // Usando CartoDB Dark Matter con mejor contraste
+        const darkTileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            maxZoom: 19,
+            className: 'dark-tiles'
+        });
+
+        // Set initial tile layer based on theme
+        if (currentTheme === 'dark') {
+            darkTileLayer.addTo(map);
+        } else {
+            lightTileLayer.addTo(map);
+        }
+
+        // Function to update map theme
+        function updateMapTheme() {
+            if (currentTheme === 'dark') {
+                map.removeLayer(lightTileLayer);
+                darkTileLayer.addTo(map);
+            } else {
+                map.removeLayer(darkTileLayer);
+                lightTileLayer.addTo(map);
+            }
+        }
+
+        // Custom icon for the marker
+        const manchaIcon = L.divIcon({
+            className: 'custom-marker',
+            html: `
+                <div style="
+                    position: relative;
+                    width: 40px;
+                    height: 40px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                ">
+                    <i class="fas fa-map-marker-alt" style="
+                        font-size: 36px;
+                        color: ${currentTheme === 'dark' ? '#FFE8B3' : '#1E3A8A'};
+                        filter: drop-shadow(0 2px 8px ${currentTheme === 'dark' ? 'rgba(255, 232, 179, 0.6)' : 'rgba(30, 58, 138, 0.5)'});
+                    "></i>
+                </div>
+            `,
+            iconSize: [40, 40],
+            iconAnchor: [20, 40],
+            popupAnchor: [0, -40]
+        });
+
+        // Add marker with popup
+        const marker = L.marker(tomellosoCoords, { icon: manchaIcon }).addTo(map);
+
+        marker.bindPopup(`
+            <div style="min-width: 200px;">
+                <div class="popup-title">
+                    <i class="fas fa-map-marker-alt" style="margin-right: 8px;"></i>
+                    Tomelloso
+                </div>
+                <div class="popup-description">
+                    <p><strong>Ciudad Real, Castilla-La Mancha</strong></p>
+                    <p style="margin-top: 8px;">
+                        Tierra de campos dorados, vino y tradición manchega.
+                        Cuna de cultura y paisajes únicos.
+                    </p>
+                    <p style="margin-top: 8px; font-size: 12px; opacity: 0.8;">
+                        <i class="fas fa-map-marker-alt"></i>
+                        39.1568°N, 3.0355°W
+                    </p>
+                </div>
+            </div>
+        `);
+
+        // Open popup on load
+        setTimeout(() => {
+            marker.openPopup();
+        }, 500);
+
+        // Add circle overlay centrado en Plaza de España
+        const circle = L.circle(plazaEspanaCoords, {
+            color: currentTheme === 'dark' ? '#94A3B8' : '#1E3A8A',
+            fillColor: currentTheme === 'dark' ? '#475569' : '#3B82F6',
+            fillOpacity: 0.15,
+            radius: 2000,
+            weight: 2
+        }).addTo(map);
+
+        // Update circle color when theme changes
+        const originalUpdateMapTheme = updateMapTheme;
+        updateMapTheme = function() {
+            originalUpdateMapTheme();
+            circle.setStyle({
+                color: currentTheme === 'dark' ? '#94A3B8' : '#1E3A8A',
+                fillColor: currentTheme === 'dark' ? '#475569' : '#3B82F6'
+            });
+
+            // Update marker icon
+            marker.setIcon(L.divIcon({
+                className: 'custom-marker',
+                html: `
+                    <div style="
+                        position: relative;
+                        width: 40px;
+                        height: 40px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    ">
+                        <i class="fas fa-map-marker-alt" style="
+                            font-size: 36px;
+                            color: ${currentTheme === 'dark' ? '#FFE8B3' : '#1E3A8A'};
+                            filter: drop-shadow(0 2px 8px ${currentTheme === 'dark' ? 'rgba(255, 232, 179, 0.6)' : 'rgba(30, 58, 138, 0.5)'});
+                        "></i>
+                    </div>
+                `,
+                iconSize: [40, 40],
+                iconAnchor: [20, 40],
+                popupAnchor: [0, -40]
+            }));
+        };
+    </script>
+</body>
+</html>

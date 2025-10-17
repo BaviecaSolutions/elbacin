@@ -1,0 +1,279 @@
+// DOM Elements
+const messagesWrapper = document.getElementById('messages-wrapper');
+const messageInput = document.getElementById('message-input');
+const sendButton = document.getElementById('send-button');
+const welcomeScreen = document.getElementById('welcome-screen');
+const chatContainer = document.getElementById('chat-container');
+const menuToggle = document.querySelector('.menu-toggle');
+const sidebar = document.querySelector('.sidebar');
+const newChatBtn = document.querySelector('.new-chat-btn');
+const suggestionCards = document.querySelectorAll('.suggestion-card');
+const themeToggle = document.getElementById('theme-toggle');
+const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+const starsContainer = document.getElementById('stars-container');
+
+// State
+let isProcessing = false;
+let currentTheme = localStorage.getItem('theme') || 'light';
+
+// Initialize theme
+document.body.classList.toggle('dark-theme', currentTheme === 'dark');
+
+// Event Listeners
+sendButton.addEventListener('click', handleSendMessage);
+messageInput.addEventListener('input', handleInputChange);
+messageInput.addEventListener('keydown', handleKeyDown);
+newChatBtn.addEventListener('click', handleNewChat);
+menuToggle.addEventListener('click', toggleSidebar);
+themeToggle.addEventListener('click', toggleTheme);
+themeToggleMobile.addEventListener('click', toggleTheme);
+
+// Suggestion cards
+suggestionCards.forEach(card => {
+    card.addEventListener('click', () => {
+        const text = card.querySelector('span').textContent;
+        messageInput.value = text;
+        handleInputChange();
+        messageInput.focus();
+    });
+});
+
+// === THEME MANAGEMENT ===
+function toggleTheme() {
+    currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+    document.body.classList.toggle('dark-theme');
+    localStorage.setItem('theme', currentTheme);
+
+    // Generate stars when switching to dark theme
+    if (currentTheme === 'dark') {
+        generateStars();
+    }
+}
+
+// Generate animated stars for dark theme
+function generateStars() {
+    starsContainer.innerHTML = '';
+    const numberOfStars = 100;
+
+    for (let i = 0; i < numberOfStars; i++) {
+        const star = document.createElement('div');
+        star.className = Math.random() > 0.8 ? 'star bright' : 'star';
+
+        // Random position
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+
+        // Random animation delay
+        star.style.animationDelay = Math.random() * 3 + 's';
+
+        starsContainer.appendChild(star);
+    }
+}
+
+// Initialize stars if starting in dark mode
+if (currentTheme === 'dark') {
+    generateStars();
+}
+
+// === MESSAGE HANDLING ===
+function handleInputChange() {
+    // Auto-resize textarea
+    messageInput.style.height = 'auto';
+    messageInput.style.height = messageInput.scrollHeight + 'px';
+
+    // Enable/disable send button
+    const hasText = messageInput.value.trim().length > 0;
+    sendButton.disabled = !hasText || isProcessing;
+}
+
+function handleKeyDown(event) {
+    // Send on Enter (without Shift)
+    if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        if (!sendButton.disabled) {
+            handleSendMessage();
+        }
+    }
+}
+
+function handleSendMessage() {
+    const text = messageInput.value.trim();
+    if (!text || isProcessing) return;
+
+    // Hide welcome screen on first message
+    if (!welcomeScreen.classList.contains('hidden')) {
+        welcomeScreen.classList.add('hidden');
+    }
+
+    // Display user message
+    displayMessage(text, 'user');
+
+    // Clear input
+    messageInput.value = '';
+    messageInput.style.height = 'auto';
+    handleInputChange();
+
+    // Show typing indicator and simulate assistant response
+    isProcessing = true;
+    showTypingIndicator();
+
+    setTimeout(() => {
+        hideTypingIndicator();
+        simulateAssistantResponse(text);
+        isProcessing = false;
+        handleInputChange();
+    }, 1000 + Math.random() * 1500);
+}
+
+function displayMessage(text, sender) {
+    const messageGroup = document.createElement('div');
+    messageGroup.className = 'message-group';
+
+    const messageHeader = document.createElement('div');
+    messageHeader.className = 'message-header';
+
+    const avatar = document.createElement('div');
+    avatar.className = `message-avatar ${sender}`;
+    avatar.innerHTML = sender === 'user'
+        ? '<i class="fas fa-user"></i>'
+        : '<i class="fas fa-wind-turbine"></i>';
+
+    const senderName = document.createElement('div');
+    senderName.className = 'message-sender';
+    senderName.textContent = sender === 'user' ? 'Tú' : 'Asistente Manchego';
+
+    messageHeader.appendChild(avatar);
+    messageHeader.appendChild(senderName);
+
+    const messageContent = document.createElement('div');
+    messageContent.className = 'message-content';
+
+    // Simple markdown-like formatting
+    const formattedText = formatMessage(text);
+    messageContent.innerHTML = formattedText;
+
+    messageGroup.appendChild(messageHeader);
+    messageGroup.appendChild(messageContent);
+    messagesWrapper.appendChild(messageGroup);
+
+    // Scroll to bottom with smooth animation
+    chatContainer.scrollTo({
+        top: chatContainer.scrollHeight,
+        behavior: 'smooth'
+    });
+}
+
+function formatMessage(text) {
+    // Simple formatting: code blocks, bold, etc.
+    let formatted = text;
+
+    // Code blocks with backticks
+    formatted = formatted.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+    // Line breaks
+    formatted = formatted.replace(/\n/g, '<br>');
+
+    return formatted;
+}
+
+function showTypingIndicator() {
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'typing-indicator';
+    typingDiv.id = 'typing-indicator';
+    typingDiv.innerHTML = '<span></span><span></span><span></span>';
+    messagesWrapper.appendChild(typingDiv);
+
+    chatContainer.scrollTo({
+        top: chatContainer.scrollHeight,
+        behavior: 'smooth'
+    });
+}
+
+function hideTypingIndicator() {
+    const typingIndicator = document.getElementById('typing-indicator');
+    if (typingIndicator) {
+        typingIndicator.remove();
+    }
+}
+
+function simulateAssistantResponse(userMessage) {
+    const responses = {
+        mancha: [
+            "Los campos de La Mancha se extienden hasta donde alcanza la vista, ondulando como olas doradas bajo el sol del mediodía.",
+            "En estas tierras, el viento cuenta historias antiguas que se pierden entre los molinos y los olivares.",
+            "La luz de Castilla tiene algo especial, ¿verdad? Transforma cada atardecer en un cuadro de ocres y dorados."
+        ],
+        noche: [
+            "Las noches en La Mancha son de una claridad asombrosa. El cielo se llena de estrellas que parecen más cercanas.",
+            "Cuando cae la noche sobre estos campos, el silencio se hace profundo y las estrellas brillan con una intensidad única.",
+            "El cielo nocturno manchego es un espectáculo: constelaciones enteras danzan sobre los campos dormidos."
+        ],
+        cultura: [
+            "La cultura manchega es rica y auténtica, forjada por generaciones que han trabajado estas tierras con pasión y dedicación.",
+            "Desde el Quijote hasta nuestros días, La Mancha ha sido tierra de historias, de carácter fuerte y corazón noble.",
+            "Nuestra tierra guarda tradiciones centenarias: el vino, el queso, las celebraciones... Todo habla de raíces profundas."
+        ],
+        general: [
+            "¡Claro! Estoy aquí para hablar contigo sobre lo que desees. ¿Te gustaría saber algo más sobre estas tierras?",
+            "Entiendo tu curiosidad. Déjame contarte más sobre la esencia de La Mancha...",
+            "Es un placer poder compartir contigo la belleza de estos paisajes y su historia.",
+            "Me encanta hablar sobre La Mancha. ¿Hay algo específico que te gustaría explorar?"
+        ]
+    };
+
+    // Generate contextual responses based on keywords
+    const lowerMessage = userMessage.toLowerCase();
+    let response;
+
+    if (lowerMessage.includes('hola') || lowerMessage.includes('buenos') || lowerMessage.includes('saludos')) {
+        response = "¡Bienvenido, viajero! Es un honor tenerte aquí. En estas tierras de La Mancha, cada palabra es una historia. ¿Qué te gustaría descubrir?";
+    } else if (lowerMessage.includes('campo') || lowerMessage.includes('tierra') || lowerMessage.includes('trigo')) {
+        response = responses.mancha[Math.floor(Math.random() * responses.mancha.length)];
+    } else if (lowerMessage.includes('noche') || lowerMessage.includes('estrella') || lowerMessage.includes('cielo')) {
+        response = responses.noche[Math.floor(Math.random() * responses.noche.length)];
+    } else if (lowerMessage.includes('cultura') || lowerMessage.includes('historia') || lowerMessage.includes('tradición') || lowerMessage.includes('quijote')) {
+        response = responses.cultura[Math.floor(Math.random() * responses.cultura.length)];
+    } else if (lowerMessage.includes('gracias') || lowerMessage.includes('thanks')) {
+        response = "¡De nada, amigo! Es un placer acompañarte en este recorrido por las tierras manchegas. Si necesitas algo más, aquí estaré.";
+    } else if (lowerMessage.includes('ayuda') || lowerMessage.includes('help')) {
+        response = "¡Por supuesto! Puedo hablarte sobre los paisajes de La Mancha, sus tradiciones, el cielo estrellado, la cultura... ¿Qué te interesa más?";
+    } else {
+        response = responses.general[Math.floor(Math.random() * responses.general.length)];
+    }
+
+    displayMessage(response, 'assistant');
+}
+
+function handleNewChat() {
+    // Clear messages
+    messagesWrapper.innerHTML = '';
+
+    // Show welcome screen
+    welcomeScreen.classList.remove('hidden');
+
+    // Reset input
+    messageInput.value = '';
+    handleInputChange();
+
+    // Scroll to top
+    chatContainer.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+function toggleSidebar() {
+    sidebar.classList.toggle('open');
+}
+
+// Close sidebar when clicking outside on mobile
+document.addEventListener('click', (e) => {
+    if (window.innerWidth <= 768) {
+        if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+            sidebar.classList.remove('open');
+        }
+    }
+});
+
+// Initialize
+handleInputChange();

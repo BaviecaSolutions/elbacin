@@ -1,0 +1,17 @@
+{
+  "name": "minimalist-chat",
+  "version": "1.0.0",
+  "description": "A minimalist real-time chat interface using HTML, CSS, and JavaScript with TailwindCSS.",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server ."
+  },
+  "keywords": [
+    "chat",
+    "minimalist",
+    "tailwindcss",
+    "javascript"
+  ],
+  "author": "",
+  "license": "MIT"
+}
