@@ -17,8 +17,8 @@ let isProcessing = false;
 let currentTheme = localStorage.getItem('theme') || 'light';
 let sessionId = localStorage.getItem('sessionId') || generateSessionId();
 
-// Theme order: light -> dark -> christmas -> light
-const themes = ['light', 'dark', 'christmas'];
+// Theme order: light -> dark -> christmas -> romeria -> light
+const themes = ['light', 'dark', 'christmas', 'romeria'];
 
 // API Configuration
 const API_URL = window.location.origin + '/api/chat';
@@ -33,6 +33,7 @@ function generateSessionId() {
 // Initialize theme
 document.body.classList.toggle('dark-theme', currentTheme === 'dark');
 document.body.classList.toggle('christmas-theme', currentTheme === 'christmas');
+document.body.classList.toggle('romeria-theme', currentTheme === 'romeria');
 
 // Event Listeners
 sendButton.addEventListener('click', handleSendMessage);
@@ -55,15 +56,15 @@ suggestionCards.forEach(card => {
 
 // === THEME MANAGEMENT ===
 function toggleTheme() {
-    // Cycle through themes: light -> dark -> christmas -> light
+    // Cycle through themes: light -> dark -> christmas -> romeria -> light
     const currentIndex = themes.indexOf(currentTheme);
     const nextIndex = (currentIndex + 1) % themes.length;
     currentTheme = themes[nextIndex];
 
     // Remove all theme classes
-    document.body.classList.remove('dark-theme', 'christmas-theme');
+    document.body.classList.remove('dark-theme', 'christmas-theme', 'romeria-theme');
 
-    // Add appropriate theme class
+    // Add appropriate theme class and generate decorations
     if (currentTheme === 'dark') {
         document.body.classList.add('dark-theme');
         generateStars();
@@ -71,6 +72,10 @@ function toggleTheme() {
         document.body.classList.add('christmas-theme');
         generateSnow();
         generateChristmasLights();
+    } else if (currentTheme === 'romeria') {
+        document.body.classList.add('romeria-theme');
+        generateFlowers();
+        generateFlags();
     }
 
     localStorage.setItem('theme', currentTheme);
@@ -138,12 +143,51 @@ function generateChristmasLights() {
     }
 }
 
+// Generate flowers for Romería theme
+function generateFlowers() {
+    const flowersContainer = document.getElementById('flowers-container');
+    flowersContainer.innerHTML = '';
+    const flowers = ['🌸', '🌺', '🌻', '🌼', '🌷', '🏵️'];
+    const numberOfFlowers = 15;
+
+    for (let i = 0; i < numberOfFlowers; i++) {
+        const flower = document.createElement('div');
+        flower.className = 'flower';
+        flower.innerHTML = flowers[Math.floor(Math.random() * flowers.length)];
+
+        // Random position
+        flower.style.left = Math.random() * 100 + '%';
+        flower.style.top = Math.random() * 100 + '%';
+
+        // Random animation delay
+        flower.style.animationDelay = Math.random() * 6 + 's';
+
+        flowersContainer.appendChild(flower);
+    }
+}
+
+// Generate colorful flags for Romería theme
+function generateFlags() {
+    const flagsContainer = document.getElementById('flags-container');
+    flagsContainer.innerHTML = '';
+    const numberOfFlags = 25;
+
+    for (let i = 0; i < numberOfFlags; i++) {
+        const flag = document.createElement('div');
+        flag.className = 'flag';
+        flagsContainer.appendChild(flag);
+    }
+}
+
 // Initialize decorations based on starting theme
 if (currentTheme === 'dark') {
     generateStars();
 } else if (currentTheme === 'christmas') {
     generateSnow();
     generateChristmasLights();
+} else if (currentTheme === 'romeria') {
+    generateFlowers();
+    generateFlags();
 }
 
 // === MESSAGE HANDLING ===
