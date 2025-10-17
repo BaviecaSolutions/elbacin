@@ -40,17 +40,17 @@
     --navidad-azul-frio: #5DADE2;
     --navidad-plateado: #C0C0C0;
 
-    /* Tema Romería - Colores vibrantes y festivos */
-    --romeria-magenta: #E91E63;
-    --romeria-naranja: #FF6F00;
-    --romeria-amarillo: #FFC107;
-    --romeria-rosa: #F48FB1;
-    --romeria-morado: #9C27B0;
-    --romeria-verde: #66BB6A;
-    --romeria-azul: #42A5F5;
-    --romeria-rojo: #EF5350;
-    --romeria-crema: #FFF9E6;
-    --romeria-tierra: #8D6E63;
+    /* Tema Romería - Colores tierra festivos */
+    --romeria-terracota: #C5705D;
+    --romeria-ocre: #D4A574;
+    --romeria-naranja-suave: #E8956B;
+    --romeria-beige: #E8D4B8;
+    --romeria-verde-oliva: #8B9556;
+    --romeria-verde-campo: #A4B168;
+    --romeria-marron: #8D6E63;
+    --romeria-dorado: #D9B382;
+    --romeria-crema: #F5F0E8;
+    --romeria-arena: #D4C4A8;
 }
 
 /* Tema por defecto (Claro) */
@@ -1391,11 +1391,21 @@ body.christmas-theme .theme-icon-christmas {
 }
 
 /* ===================================
-   TEMA ROMERÍA DE TOMELLOSO
+   TEMA ROMERÍA DE TOMELLOSO (ACTUALIZADO)
    =================================== */
 
-/* Ocultar imagen de fondo y otros efectos */
-body.romeria-theme .background-image,
+/* Mostrar imagen de fondo en tema romería */
+body.romeria-theme .background-image {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Overlay oscuro para mejorar legibilidad con imagen */
+body.romeria-theme .background-image::before {
+    background: rgba(141, 110, 99, 0.75);
+}
+
+/* Ocultar otras decoraciones */
 body.romeria-theme .stars-container,
 body.romeria-theme .snow-container,
 body.romeria-theme .christmas-lights {
@@ -1403,9 +1413,9 @@ body.romeria-theme .christmas-lights {
     pointer-events: none;
 }
 
-/* Tema Romería - Fondo festivo con gradiente vibrante */
+/* Tema Romería - Sin gradiente de fondo, solo imagen */
 body.romeria-theme {
-    background: linear-gradient(135deg, var(--romeria-magenta) 0%, var(--romeria-naranja) 50%, var(--romeria-amarillo) 100%);
+    background: var(--romeria-marron);
     color: var(--romeria-crema);
 }
 
@@ -1430,7 +1440,7 @@ body.romeria-theme .flowers-container {
     position: absolute;
     font-size: 2em;
     animation: float-flower 6s ease-in-out infinite;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
 }
 
 @keyframes float-flower {
@@ -1473,22 +1483,22 @@ body.romeria-theme .flags-container {
 }
 
 .flag:nth-child(4n+1) {
-    border-top-color: var(--romeria-magenta);
+    border-top-color: var(--romeria-terracota);
     animation-delay: 0s;
 }
 
 .flag:nth-child(4n+2) {
-    border-top-color: var(--romeria-amarillo);
+    border-top-color: var(--romeria-dorado);
     animation-delay: 0.5s;
 }
 
 .flag:nth-child(4n+3) {
-    border-top-color: var(--romeria-azul);
+    border-top-color: var(--romeria-verde-oliva);
     animation-delay: 1s;
 }
 
 .flag:nth-child(4n) {
-    border-top-color: var(--romeria-verde);
+    border-top-color: var(--romeria-naranja-suave);
     animation-delay: 1.5s;
 }
 
@@ -1506,23 +1516,23 @@ body.romeria-theme .flags-container {
 
 /* === SIDEBAR - Tema Romería === */
 body.romeria-theme .sidebar {
-    background: rgba(156, 39, 176, 0.95);
-    border-right: 2px solid var(--romeria-amarillo);
-    box-shadow: 2px 0 20px rgba(255, 193, 7, 0.4);
+    background: rgba(141, 110, 99, 0.95);
+    border-right: 2px solid var(--romeria-dorado);
+    box-shadow: 2px 0 20px rgba(217, 179, 130, 0.4);
 }
 
 body.romeria-theme .sidebar-header {
-    border-bottom: 1px solid var(--romeria-amarillo);
+    border-bottom: 1px solid var(--romeria-dorado);
 }
 
 body.romeria-theme .new-chat-btn {
-    background: linear-gradient(135deg, var(--romeria-magenta), var(--romeria-rojo));
-    box-shadow: 0 4px 12px rgba(233, 30, 99, 0.5);
+    background: linear-gradient(135deg, var(--romeria-terracota), var(--romeria-naranja-suave));
+    box-shadow: 0 4px 12px rgba(197, 112, 93, 0.5);
 }
 
 body.romeria-theme .new-chat-btn:hover {
-    box-shadow: 0 6px 20px rgba(233, 30, 99, 0.7);
-    background: var(--romeria-magenta);
+    box-shadow: 0 6px 20px rgba(197, 112, 93, 0.7);
+    background: var(--romeria-terracota);
 }
 
 body.romeria-theme .chat-history-item {
@@ -1530,54 +1540,54 @@ body.romeria-theme .chat-history-item {
 }
 
 body.romeria-theme .chat-history-item:hover {
-    background: rgba(255, 193, 7, 0.2);
+    background: rgba(217, 179, 130, 0.2);
 }
 
 body.romeria-theme .chat-history-item.active {
-    background: rgba(255, 193, 7, 0.3);
-    color: var(--romeria-amarillo);
+    background: rgba(217, 179, 130, 0.3);
+    color: var(--romeria-dorado);
 }
 
 body.romeria-theme .sidebar-footer {
-    border-top: 1px solid var(--romeria-amarillo);
+    border-top: 1px solid var(--romeria-dorado);
 }
 
 /* === MAP LINK - Tema Romería === */
 body.romeria-theme .map-link-btn {
-    background: linear-gradient(135deg, var(--romeria-naranja), var(--romeria-rojo));
+    background: linear-gradient(135deg, var(--romeria-verde-oliva), var(--romeria-verde-campo));
     color: var(--romeria-crema);
-    box-shadow: 0 2px 8px rgba(255, 111, 0, 0.5);
+    box-shadow: 0 2px 8px rgba(139, 149, 86, 0.5);
 }
 
 body.romeria-theme .map-link-btn:hover {
-    box-shadow: 0 4px 12px rgba(255, 111, 0, 0.7);
+    box-shadow: 0 4px 12px rgba(139, 149, 86, 0.7);
 }
 
 /* === THEME TOGGLE - Tema Romería === */
 body.romeria-theme .theme-toggle {
-    background: linear-gradient(135deg, var(--romeria-rosa), var(--romeria-morado));
+    background: linear-gradient(135deg, var(--romeria-ocre), var(--romeria-dorado));
     color: white;
-    box-shadow: 0 2px 8px rgba(233, 30, 99, 0.5);
+    box-shadow: 0 2px 8px rgba(212, 165, 116, 0.5);
 }
 
 body.romeria-theme .theme-toggle:hover {
-    box-shadow: 0 4px 12px rgba(233, 30, 99, 0.7);
+    box-shadow: 0 4px 12px rgba(212, 165, 116, 0.7);
 }
 
 body.romeria-theme .avatar {
-    background: linear-gradient(135deg, var(--romeria-magenta), var(--romeria-amarillo));
-    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.5);
+    background: linear-gradient(135deg, var(--romeria-terracota), var(--romeria-dorado));
+    box-shadow: 0 2px 8px rgba(217, 179, 130, 0.5);
 }
 
 body.romeria-theme .user-profile:hover {
-    background: rgba(255, 193, 7, 0.2);
+    background: rgba(217, 179, 130, 0.2);
 }
 
 /* === HEADER - Tema Romería === */
 body.romeria-theme .chat-header {
-    background: rgba(156, 39, 176, 0.95);
-    border-bottom: 2px solid var(--romeria-amarillo);
-    box-shadow: 0 2px 15px rgba(255, 193, 7, 0.4);
+    background: rgba(141, 110, 99, 0.95);
+    border-bottom: 2px solid var(--romeria-dorado);
+    box-shadow: 0 2px 15px rgba(217, 179, 130, 0.4);
 }
 
 body.romeria-theme .menu-toggle {
@@ -1585,28 +1595,28 @@ body.romeria-theme .menu-toggle {
 }
 
 body.romeria-theme .header-title {
-    color: var(--romeria-amarillo);
-    text-shadow: 0 0 15px rgba(255, 193, 7, 0.6);
+    color: var(--romeria-dorado);
+    text-shadow: 0 0 15px rgba(217, 179, 130, 0.6);
 }
 
 body.romeria-theme .icon-btn {
-    color: var(--romeria-amarillo);
+    color: var(--romeria-dorado);
 }
 
 body.romeria-theme .icon-btn:hover {
-    background: rgba(255, 193, 7, 0.2);
-    color: var(--romeria-naranja);
+    background: rgba(217, 179, 130, 0.2);
+    color: var(--romeria-naranja-suave);
 }
 
 /* === WELCOME SCREEN - Tema Romería === */
 body.romeria-theme .welcome-icon {
-    background: linear-gradient(135deg, var(--romeria-magenta), var(--romeria-naranja));
-    box-shadow: 0 8px 30px rgba(233, 30, 99, 0.5), 0 0 40px rgba(255, 193, 7, 0.4);
+    background: linear-gradient(135deg, var(--romeria-terracota), var(--romeria-ocre));
+    box-shadow: 0 8px 30px rgba(197, 112, 93, 0.5), 0 0 40px rgba(217, 179, 130, 0.4);
 }
 
 body.romeria-theme .welcome-title {
-    color: var(--romeria-amarillo);
-    text-shadow: 0 0 20px rgba(255, 193, 7, 0.5);
+    color: var(--romeria-dorado);
+    text-shadow: 0 0 20px rgba(217, 179, 130, 0.5);
 }
 
 body.romeria-theme .welcome-subtitle {
@@ -1615,73 +1625,73 @@ body.romeria-theme .welcome-subtitle {
 
 /* === SUGGESTION CARDS - Tema Romería === */
 body.romeria-theme .suggestion-card {
-    background: rgba(156, 39, 176, 0.7);
-    border: 2px solid rgba(255, 193, 7, 0.5);
+    background: rgba(141, 110, 99, 0.7);
+    border: 2px solid rgba(217, 179, 130, 0.5);
     color: var(--romeria-crema);
-    box-shadow: 0 4px 20px rgba(233, 30, 99, 0.4);
+    box-shadow: 0 4px 20px rgba(197, 112, 93, 0.4);
 }
 
 body.romeria-theme .suggestion-card::before {
-    background: linear-gradient(90deg, transparent, rgba(255, 193, 7, 0.3), transparent);
+    background: linear-gradient(90deg, transparent, rgba(217, 179, 130, 0.3), transparent);
 }
 
 body.romeria-theme .suggestion-card i {
-    color: var(--romeria-amarillo);
+    color: var(--romeria-dorado);
 }
 
 body.romeria-theme .suggestion-card:hover {
-    box-shadow: 0 10px 35px rgba(233, 30, 99, 0.6);
-    border-color: var(--romeria-amarillo);
-    transform: translateY(-6px) scale(1.02) rotate(2deg);
+    box-shadow: 0 10px 35px rgba(197, 112, 93, 0.6);
+    border-color: var(--romeria-dorado);
+    transform: translateY(-4px) scale(1.02);
 }
 
 /* === MESSAGES - Tema Romería === */
 body.romeria-theme .message-sender {
-    color: var(--romeria-amarillo);
+    color: var(--romeria-dorado);
 }
 
 body.romeria-theme .message-avatar.user {
-    background: var(--romeria-magenta);
-    box-shadow: 0 2px 10px rgba(233, 30, 99, 0.5);
+    background: var(--romeria-terracota);
+    box-shadow: 0 2px 10px rgba(197, 112, 93, 0.5);
 }
 
 body.romeria-theme .message-avatar.assistant {
-    background: var(--romeria-naranja);
-    box-shadow: 0 2px 10px rgba(255, 111, 0, 0.5);
+    background: var(--romeria-verde-oliva);
+    box-shadow: 0 2px 10px rgba(139, 149, 86, 0.5);
 }
 
 body.romeria-theme .message-content {
     color: var(--romeria-crema);
-    background: rgba(156, 39, 176, 0.6);
-    border-left: 3px solid var(--romeria-amarillo);
-    box-shadow: 0 2px 15px rgba(233, 30, 99, 0.3);
+    background: rgba(141, 110, 99, 0.6);
+    border-left: 3px solid var(--romeria-dorado);
+    box-shadow: 0 2px 15px rgba(197, 112, 93, 0.3);
 }
 
 body.romeria-theme .message-content code {
-    background: rgba(255, 193, 7, 0.3);
-    color: var(--romeria-amarillo);
+    background: rgba(217, 179, 130, 0.3);
+    color: var(--romeria-dorado);
 }
 
 /* === TYPING INDICATOR - Tema Romería === */
 body.romeria-theme .typing-indicator span {
-    background: var(--romeria-amarillo);
+    background: var(--romeria-dorado);
 }
 
 /* === INPUT AREA - Tema Romería === */
 body.romeria-theme .input-container {
-    background: rgba(156, 39, 176, 0.9);
-    border-top: 1px solid var(--romeria-amarillo);
+    background: rgba(141, 110, 99, 0.9);
+    border-top: 1px solid var(--romeria-dorado);
 }
 
 body.romeria-theme .input-wrapper {
-    background: rgba(156, 39, 176, 0.7);
-    border: 2px solid var(--romeria-amarillo);
-    box-shadow: 0 4px 20px rgba(255, 193, 7, 0.4);
+    background: rgba(141, 110, 99, 0.7);
+    border: 2px solid var(--romeria-dorado);
+    box-shadow: 0 4px 20px rgba(217, 179, 130, 0.4);
 }
 
 body.romeria-theme .input-wrapper:focus-within {
-    border-color: var(--romeria-naranja);
-    box-shadow: 0 6px 30px rgba(255, 111, 0, 0.5);
+    border-color: var(--romeria-naranja-suave);
+    box-shadow: 0 6px 30px rgba(232, 149, 107, 0.5);
 }
 
 body.romeria-theme .message-input {
@@ -1689,51 +1699,32 @@ body.romeria-theme .message-input {
 }
 
 body.romeria-theme .message-input::placeholder {
-    color: var(--romeria-rosa);
+    color: var(--romeria-beige);
 }
 
 body.romeria-theme .send-button {
-    background: linear-gradient(135deg, var(--romeria-magenta), var(--romeria-naranja));
-    box-shadow: 0 4px 12px rgba(233, 30, 99, 0.5);
+    background: linear-gradient(135deg, var(--romeria-terracota), var(--romeria-naranja-suave));
+    box-shadow: 0 4px 12px rgba(197, 112, 93, 0.5);
 }
 
 body.romeria-theme .send-button:hover:not(:disabled) {
-    box-shadow: 0 6px 20px rgba(233, 30, 99, 0.7);
-    transform: scale(1.08) rotate(5deg);
+    box-shadow: 0 6px 20px rgba(197, 112, 93, 0.7);
+    transform: scale(1.05);
 }
 
 body.romeria-theme .input-footer {
-    color: var(--romeria-rosa);
+    color: var(--romeria-beige);
 }
 
 /* === SCROLLBAR - Tema Romería === */
 body.romeria-theme .chat-container::-webkit-scrollbar-thumb,
 body.romeria-theme .chat-history::-webkit-scrollbar-thumb {
-    background: rgba(255, 193, 7, 0.5);
+    background: rgba(217, 179, 130, 0.5);
 }
 
 body.romeria-theme .chat-container::-webkit-scrollbar-thumb:hover,
 body.romeria-theme .chat-history::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 193, 7, 0.7);
-}
-
-/* Efectos especiales de confeti */
-.confetti {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    animation: confetti-fall 3s linear infinite;
-}
-
-@keyframes confetti-fall {
-    0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(100vh) rotate(720deg);
-        opacity: 0;
-    }
+    background: rgba(217, 179, 130, 0.7);
 }
 
 /* === Theme Icon Management - Romería === */
