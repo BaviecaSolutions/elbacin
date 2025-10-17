@@ -1,6 +1,23 @@
 # Chat La Mancha 🌾✨
 
-Una interfaz de chat inspirada en los paisajes y el cielo de Castilla-La Mancha, con dos temas únicos que capturan la esencia de la región.
+Una interfaz de chat inspirada en los paisajes y el cielo de Castilla-La Mancha, con integración completa a n8n para procesamiento de mensajes con IA u otros servicios.
+
+## 🚀 Inicio Rápido
+
+**¿Primera vez?** Lee la [Guía de Instalación Completa](INSTALL.md)
+
+```bash
+# 1. Instala dependencias
+npm install
+
+# 2. Configura tu webhook de n8n en .env
+N8N_WEBHOOK_URL=https://tu-instancia-n8n.com/webhook/tu-id
+
+# 3. Inicia el servidor
+npm start
+
+# 4. Abre http://localhost:3000
+```
 
 ## 🎨 Temas Visuales
 
@@ -28,7 +45,14 @@ Inspirado en el cielo estrellado manchego:
   - Estrella: `#E8E8F0`
   - Destello: `#FFE8B3`
 
-## ✨ Características
+## ✨ Características Principales
+
+### 🔌 Integración n8n
+- **Conexión directa** a workflows de n8n vía webhooks
+- **Sistema de respaldo** automático si n8n no está disponible
+- **Gestión de sesiones** para mantener contexto entre mensajes
+- **Manejo de errores robusto** con timeouts y reintentos
+- **API REST** para comunicación backend-frontend
 
 ### Diseño Visual
 - **Dos temas completos** con transiciones suaves entre ellos
@@ -64,19 +88,35 @@ El asistente reconoce y responde a temas relacionados con La Mancha:
 
 ## 🚀 Cómo usar
 
-1. **Abrir el archivo**: Abre `index.html` en tu navegador
-2. **Explorar temas**: Haz clic en el botón de cambio de tema (sol/luna)
-3. **Iniciar conversación**: Usa las tarjetas de sugerencia o escribe tu propio mensaje
-4. **Disfrutar**: Experimenta con ambos temas y observa las transiciones
+### Configuración Inicial
+
+Lee la [Guía de Instalación Completa](INSTALL.md) para configurar n8n.
+
+### Uso del Chat
+
+1. **Inicia el servidor**: `npm start`
+2. **Abre el navegador**: Ve a `http://localhost:3000`
+3. **Explora temas**: Haz clic en el botón de cambio de tema (sol/luna)
+4. **Chatea**: Escribe mensajes y recibe respuestas de tu workflow n8n
 
 ## 🎯 Tecnologías
 
+### Backend
+- **Node.js + Express**: Servidor web
+- **Axios**: Cliente HTTP para n8n
+- **dotenv**: Gestión de variables de entorno
+- **CORS**: Manejo de peticiones cross-origin
+
+### Frontend
 - **HTML5**: Estructura semántica
 - **CSS3**: Variables CSS, gradientes, animaciones, glassmorphism
 - **Tailwind CSS**: Framework base para utilidades
 - **JavaScript Vanilla**: Lógica de interacción sin dependencias
 - **Font Awesome 6**: Iconografía moderna
-- **Google Fonts**: Crimson Text (serif elegante) e Inter (sans-serif moderna)
+- **Google Fonts**: Crimson Text e Inter
+
+### Integración
+- **n8n**: Plataforma de automatización y workflows
 
 ## 🌟 Detalles Especiales
 
@@ -128,18 +168,65 @@ Este proyecto captura la esencia de Castilla-La Mancha:
 ## 📁 Estructura del Proyecto
 
 ```
-minimalist-chat
-├── index.html          # Interfaz principal del chat
-├── src
-│   ├── css
-│   │   └── styles.css  # Estilos completos con ambos temas
-│   └── js
-│       └── app.js      # Lógica de interacción y cambio de tema
-├── package.json        # Configuración npm
-├── tailwind.config.js  # Colores personalizados de La Mancha
-└── README.md           # Documentación del proyecto
+elbacin/
+├── server.js              # Servidor backend Express
+├── package.json           # Dependencias y scripts
+├── .env                   # Configuración (webhook n8n)
+├── .env.example           # Plantilla de configuración
+├── .gitignore            # Archivos ignorados por git
+├── README.md             # Esta documentación
+├── INSTALL.md            # Guía de instalación paso a paso
+├── index.html            # Interfaz principal del chat
+├── mapa.html             # Mapa interactivo de Tomelloso
+├── tailwind.config.js    # Configuración de Tailwind
+├── images/               # Imágenes de fondo
+│   ├── fondo_uvas.jpg
+│   └── fondo_lavanda.jpg
+└── src/
+    ├── css/
+    │   └── styles.css    # Estilos con temas claro/oscuro
+    └── js/
+        └── app.js        # Lógica del chat + integración n8n
 ```
+
+## 📚 Documentación
+
+- **[INSTALL.md](INSTALL.md)** - Guía completa de instalación paso a paso
+- **[README.md](README.md)** - Este archivo (visión general)
+- **`.env.example`** - Plantilla de configuración
+
+## 🔌 API Endpoints
+
+### `POST /api/chat`
+Envía mensaje a n8n y obtiene respuesta.
+
+### `GET /api/health`
+Verifica estado del servidor.
+
+### `POST /api/webhook/response`
+Recibe respuestas asíncronas de n8n (opcional).
+
+## 🤝 Contribuir
+
+¡Las contribuciones son bienvenidas!
+
+1. Fork el proyecto
+2. Crea tu rama (`git checkout -b feature/AmazingFeature`)
+3. Commit cambios (`git commit -m 'Add AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 📄 Licencia
+
+MIT License
+
+## 👤 Autor
+
+**BaviecaSolutions**
+- GitHub: [@BaviecaSolutions](https://github.com/BaviecaSolutions)
+- Repositorio: [elbacin](https://github.com/BaviecaSolutions/elbacin)
 
 ---
 
 **Creado con ❤️ inspirado en los paisajes de Castilla-La Mancha**
+**Powered by n8n automation**

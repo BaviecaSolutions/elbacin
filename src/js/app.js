@@ -15,6 +15,17 @@ const starsContainer = document.getElementById('stars-container');
 // State
 let isProcessing = false;
 let currentTheme = localStorage.getItem('theme') || 'light';
+let sessionId = localStorage.getItem('sessionId') || generateSessionId();
+
+// API Configuration
+const API_URL = window.location.origin + '/api/chat';
+
+// Generate unique session ID
+function generateSessionId() {
+    const id = 'session_' + Date.now() + '_' + Math.random().toString(36).substring(2, 11);
+    localStorage.setItem('sessionId', id);
+    return id;
+}
 
 // Initialize theme
 document.body.classList.toggle('dark-theme', currentTheme === 'dark');
@@ -113,16 +124,12 @@ function handleSendMessage() {
     messageInput.style.height = 'auto';
     handleInputChange();
 
-    // Show typing indicator and simulate assistant response
+    // Show typing indicator and send to n8n
     isProcessing = true;
     showTypingIndicator();
 
-    setTimeout(() => {
-        hideTypingIndicator();
-        simulateAssistantResponse(text);
-        isProcessing = false;
-        handleInputChange();
-    }, 1000 + Math.random() * 1500);
+    // Send message to backend (which forwards to n8n)
+    sendMessageToN8N(text);
 }
 
 function displayMessage(text, sender) {
@@ -196,6 +203,49 @@ function hideTypingIndicator() {
     }
 }
 
+// Send message to n8n via backend
+async function sendMessageToN8N(message) {
+    try {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: message,
+                sessionId: sessionId
+            })
+        });
+
+        const data = await response.json();
+
+        hideTypingIndicator();
+
+        if (data.success && data.response) {
+            // Display response from n8n
+            displayMessage(data.response, 'assistant');
+        } else if (data.fallback) {
+            // If n8n fails, use fallback
+            console.warn('Using fallback response due to n8n error:', data.error);
+            displayMessage('Lo siento, estoy teniendo problemas para conectar. Por favor, intenta de nuevo en un momento.', 'assistant');
+        } else {
+            throw new Error('Invalid response format');
+        }
+
+    } catch (error) {
+        console.error('Error sending message:', error);
+        hideTypingIndicator();
+
+        // Fallback to local simulation if backend is not available
+        console.warn('Backend not available, using local simulation');
+        simulateAssistantResponse(message);
+    } finally {
+        isProcessing = false;
+        handleInputChange();
+    }
+}
+
+// Fallback function for when n8n is not available
 function simulateAssistantResponse(userMessage) {
     const responses = {
         mancha: [
