@@ -51,6 +51,18 @@
     --romeria-dorado: #D9B382;
     --romeria-crema: #F5F0E8;
     --romeria-arena: #D4C4A8;
+
+    /* Tema Semana Santa - Colores litúrgicos */
+    --semana-morado-oscuro: #4A1C6B;
+    --semana-morado-medio: #6B2D8F;
+    --semana-morado-claro: #8B4AAF;
+    --semana-purpura: #7B3F9E;
+    --semana-dorado: #D4AF37;
+    --semana-dorado-claro: #F4D03F;
+    --semana-blanco-liturgico: #F8F6F0;
+    --semana-crema: #FDF5E6;
+    --semana-negro: #2C1F2F;
+    --semana-gris-ceniza: #8C7B8B;
 }
 
 /* Tema por defecto (Claro) */
@@ -1394,10 +1406,11 @@ body.christmas-theme .theme-icon-christmas {
    TEMA ROMERÍA DE TOMELLOSO (ACTUALIZADO)
    =================================== */
 
-/* Mostrar imagen de fondo en tema romería */
+/* Mostrar imagen de fondo en tema romería con imagen diferente */
 body.romeria-theme .background-image {
     opacity: 1;
     pointer-events: auto;
+    background-image: url('../../images/romeria_virgen.jpeg') !important;
 }
 
 /* Overlay oscuro para mejorar legibilidad con imagen */
@@ -1740,5 +1753,367 @@ body.romeria-theme .theme-icon-christmas {
 }
 
 body.romeria-theme .theme-icon-romeria {
+    display: inline;
+}
+
+/* ===================================
+   TEMA SEMANA SANTA
+   =================================== */
+
+/* Ocultar imagen de fondo en tema Semana Santa */
+body.semana-santa-theme .background-image {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Ocultar otras decoraciones */
+body.semana-santa-theme .stars-container,
+body.semana-santa-theme .snow-container,
+body.semana-santa-theme .christmas-lights,
+body.semana-santa-theme .flowers-container,
+body.semana-santa-theme .flags-container {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Tema Semana Santa - Fondo con gradiente morado litúrgico */
+body.semana-santa-theme {
+    background: linear-gradient(135deg, var(--semana-morado-oscuro) 0%, var(--semana-morado-medio) 50%, var(--semana-purpura) 100%);
+    color: var(--semana-crema);
+}
+
+/* === Contenedor de velas (solo tema Semana Santa) === */
+.candles-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 150px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    z-index: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    padding: 20px;
+}
+
+body.semana-santa-theme .candles-container {
+    opacity: 1;
+}
+
+.candle {
+    position: relative;
+    width: 20px;
+    height: 80px;
+    background: linear-gradient(180deg, #F4E4C1 0%, #D4C4A1 100%);
+    border-radius: 3px 3px 0 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.candle::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 15px solid #FFA500;
+    filter: blur(2px);
+    animation: flicker 2s infinite;
+}
+
+.candle::after {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    height: 8px;
+    background: #2C1F2F;
+    border-radius: 50% 50% 0 0;
+}
+
+@keyframes flicker {
+    0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+    50% { opacity: 0.8; transform: translateX(-50%) scale(0.95); }
+}
+
+/* === Cruces decorativas === */
+.crosses-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    z-index: 0;
+}
+
+body.semana-santa-theme .crosses-container {
+    opacity: 0.1;
+}
+
+.cross {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    opacity: 0.3;
+}
+
+.cross::before,
+.cross::after {
+    content: '';
+    position: absolute;
+    background: var(--semana-dorado);
+}
+
+.cross::before {
+    width: 6px;
+    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.cross::after {
+    width: 100%;
+    height: 6px;
+    top: 30%;
+    transform: translateY(-50%);
+}
+
+/* === SIDEBAR - Tema Semana Santa === */
+body.semana-santa-theme .sidebar {
+    background: rgba(74, 28, 107, 0.95);
+    border-right: 2px solid var(--semana-dorado);
+    box-shadow: 2px 0 20px rgba(212, 175, 55, 0.3);
+}
+
+body.semana-santa-theme .sidebar-header {
+    border-bottom: 1px solid var(--semana-dorado);
+}
+
+body.semana-santa-theme .new-chat-btn {
+    background: linear-gradient(135deg, var(--semana-morado-medio), var(--semana-morado-claro));
+    box-shadow: 0 4px 12px rgba(107, 45, 143, 0.5);
+}
+
+body.semana-santa-theme .new-chat-btn:hover {
+    box-shadow: 0 6px 20px rgba(107, 45, 143, 0.7);
+    background: var(--semana-morado-oscuro);
+}
+
+body.semana-santa-theme .chat-history-item {
+    color: var(--semana-crema);
+}
+
+body.semana-santa-theme .chat-history-item:hover {
+    background: rgba(212, 175, 55, 0.2);
+}
+
+body.semana-santa-theme .chat-history-item.active {
+    background: rgba(212, 175, 55, 0.3);
+    color: var(--semana-dorado-claro);
+}
+
+body.semana-santa-theme .sidebar-footer {
+    border-top: 1px solid var(--semana-dorado);
+}
+
+/* === MAP LINK - Tema Semana Santa === */
+body.semana-santa-theme .map-link-btn {
+    background: linear-gradient(135deg, var(--semana-purpura), var(--semana-morado-claro));
+    color: var(--semana-blanco-liturgico);
+    box-shadow: 0 2px 8px rgba(123, 63, 158, 0.5);
+}
+
+body.semana-santa-theme .map-link-btn:hover {
+    box-shadow: 0 4px 12px rgba(123, 63, 158, 0.7);
+}
+
+/* === THEME TOGGLE - Tema Semana Santa === */
+body.semana-santa-theme .theme-toggle {
+    background: linear-gradient(135deg, var(--semana-morado-oscuro), var(--semana-purpura));
+    color: var(--semana-blanco-liturgico);
+    box-shadow: 0 2px 8px rgba(74, 28, 107, 0.5);
+}
+
+body.semana-santa-theme .theme-toggle:hover {
+    box-shadow: 0 4px 12px rgba(74, 28, 107, 0.7);
+}
+
+body.semana-santa-theme .avatar {
+    background: linear-gradient(135deg, var(--semana-morado-medio), var(--semana-dorado));
+    box-shadow: 0 2px 8px rgba(212, 175, 55, 0.5);
+}
+
+body.semana-santa-theme .user-profile:hover {
+    background: rgba(212, 175, 55, 0.2);
+}
+
+/* === HEADER - Tema Semana Santa === */
+body.semana-santa-theme .chat-header {
+    background: rgba(74, 28, 107, 0.95);
+    border-bottom: 2px solid var(--semana-dorado);
+    box-shadow: 0 2px 15px rgba(212, 175, 55, 0.3);
+}
+
+body.semana-santa-theme .menu-toggle {
+    color: var(--semana-crema);
+}
+
+body.semana-santa-theme .header-title {
+    color: var(--semana-dorado);
+    text-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+}
+
+body.semana-santa-theme .icon-btn {
+    color: var(--semana-dorado);
+}
+
+body.semana-santa-theme .icon-btn:hover {
+    background: rgba(212, 175, 55, 0.2);
+    color: var(--semana-dorado-claro);
+}
+
+/* === WELCOME SCREEN - Tema Semana Santa === */
+body.semana-santa-theme .welcome-icon {
+    background: linear-gradient(135deg, var(--semana-morado-oscuro), var(--semana-purpura));
+    box-shadow: 0 8px 30px rgba(107, 45, 143, 0.5), 0 0 40px rgba(212, 175, 55, 0.3);
+}
+
+body.semana-santa-theme .welcome-title {
+    color: var(--semana-dorado);
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+}
+
+body.semana-santa-theme .welcome-subtitle {
+    color: var(--semana-crema);
+}
+
+/* === SUGGESTION CARDS - Tema Semana Santa === */
+body.semana-santa-theme .suggestion-card {
+    background: rgba(74, 28, 107, 0.7);
+    border: 2px solid rgba(212, 175, 55, 0.5);
+    color: var(--semana-crema);
+    box-shadow: 0 4px 20px rgba(107, 45, 143, 0.4);
+}
+
+body.semana-santa-theme .suggestion-card::before {
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
+}
+
+body.semana-santa-theme .suggestion-card i {
+    color: var(--semana-dorado);
+}
+
+body.semana-santa-theme .suggestion-card:hover {
+    box-shadow: 0 10px 35px rgba(107, 45, 143, 0.6);
+    border-color: var(--semana-dorado);
+    transform: translateY(-4px) scale(1.02);
+}
+
+/* === MESSAGES - Tema Semana Santa === */
+body.semana-santa-theme .message-sender {
+    color: var(--semana-dorado);
+}
+
+body.semana-santa-theme .message-avatar.user {
+    background: var(--semana-morado-medio);
+    box-shadow: 0 2px 10px rgba(107, 45, 143, 0.5);
+}
+
+body.semana-santa-theme .message-avatar.assistant {
+    background: var(--semana-purpura);
+    box-shadow: 0 2px 10px rgba(123, 63, 158, 0.5);
+}
+
+body.semana-santa-theme .message-content {
+    color: var(--semana-crema);
+    background: rgba(74, 28, 107, 0.6);
+    border-left: 3px solid var(--semana-dorado);
+    box-shadow: 0 2px 15px rgba(107, 45, 143, 0.3);
+}
+
+body.semana-santa-theme .message-content code {
+    background: rgba(212, 175, 55, 0.2);
+    color: var(--semana-dorado-claro);
+}
+
+/* === TYPING INDICATOR - Tema Semana Santa === */
+body.semana-santa-theme .typing-indicator span {
+    background: var(--semana-dorado);
+}
+
+/* === INPUT AREA - Tema Semana Santa === */
+body.semana-santa-theme .input-container {
+    background: rgba(74, 28, 107, 0.9);
+    border-top: 1px solid var(--semana-dorado);
+}
+
+body.semana-santa-theme .input-wrapper {
+    background: rgba(107, 45, 143, 0.6);
+    border: 2px solid var(--semana-dorado);
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+}
+
+body.semana-santa-theme .input-wrapper:focus-within {
+    border-color: var(--semana-dorado-claro);
+    box-shadow: 0 6px 30px rgba(212, 175, 55, 0.5);
+}
+
+body.semana-santa-theme .message-input {
+    color: var(--semana-crema);
+}
+
+body.semana-santa-theme .message-input::placeholder {
+    color: var(--semana-gris-ceniza);
+}
+
+body.semana-santa-theme .send-button {
+    background: linear-gradient(135deg, var(--semana-morado-medio), var(--semana-purpura));
+    box-shadow: 0 4px 12px rgba(107, 45, 143, 0.5);
+}
+
+body.semana-santa-theme .send-button:hover:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(107, 45, 143, 0.7);
+    transform: scale(1.05);
+}
+
+body.semana-santa-theme .input-footer {
+    color: var(--semana-gris-ceniza);
+}
+
+/* === SCROLLBAR - Tema Semana Santa === */
+body.semana-santa-theme .chat-container::-webkit-scrollbar-thumb,
+body.semana-santa-theme .chat-history::-webkit-scrollbar-thumb {
+    background: rgba(212, 175, 55, 0.5);
+}
+
+body.semana-santa-theme .chat-container::-webkit-scrollbar-thumb:hover,
+body.semana-santa-theme .chat-history::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 175, 55, 0.7);
+}
+
+/* === Theme Icon Management - Semana Santa === */
+.theme-icon-semana-santa {
+    display: none;
+}
+
+body.semana-santa-theme .theme-icon-light,
+body.semana-santa-theme .theme-icon-dark,
+body.semana-santa-theme .theme-icon-christmas,
+body.semana-santa-theme .theme-icon-romeria {
+    display: none;
+}
+
+body.semana-santa-theme .theme-icon-semana-santa {
     display: inline;
 }

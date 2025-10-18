@@ -17,8 +17,8 @@ let isProcessing = false;
 let currentTheme = localStorage.getItem('theme') || 'light';
 let sessionId = localStorage.getItem('sessionId') || generateSessionId();
 
-// Theme order: light -> dark -> christmas -> romeria -> light
-const themes = ['light', 'dark', 'christmas', 'romeria'];
+// Theme order: light -> dark -> christmas -> romeria -> semana-santa -> light
+const themes = ['light', 'dark', 'christmas', 'romeria', 'semana-santa'];
 
 // API Configuration
 const API_URL = window.location.origin + '/api/chat';
@@ -34,6 +34,7 @@ function generateSessionId() {
 document.body.classList.toggle('dark-theme', currentTheme === 'dark');
 document.body.classList.toggle('christmas-theme', currentTheme === 'christmas');
 document.body.classList.toggle('romeria-theme', currentTheme === 'romeria');
+document.body.classList.toggle('semana-santa-theme', currentTheme === 'semana-santa');
 
 // Event Listeners
 sendButton.addEventListener('click', handleSendMessage);
@@ -56,13 +57,13 @@ suggestionCards.forEach(card => {
 
 // === THEME MANAGEMENT ===
 function toggleTheme() {
-    // Cycle through themes: light -> dark -> christmas -> romeria -> light
+    // Cycle through themes: light -> dark -> christmas -> romeria -> semana-santa -> light
     const currentIndex = themes.indexOf(currentTheme);
     const nextIndex = (currentIndex + 1) % themes.length;
     currentTheme = themes[nextIndex];
 
     // Remove all theme classes
-    document.body.classList.remove('dark-theme', 'christmas-theme', 'romeria-theme');
+    document.body.classList.remove('dark-theme', 'christmas-theme', 'romeria-theme', 'semana-santa-theme');
 
     // Add appropriate theme class and generate decorations
     if (currentTheme === 'dark') {
@@ -76,6 +77,10 @@ function toggleTheme() {
         document.body.classList.add('romeria-theme');
         generateFlowers();
         generateFlags();
+    } else if (currentTheme === 'semana-santa') {
+        document.body.classList.add('semana-santa-theme');
+        generateCandles();
+        generateCrosses();
     }
 
     localStorage.setItem('theme', currentTheme);
@@ -179,6 +184,37 @@ function generateFlags() {
     }
 }
 
+// Generate candles for Semana Santa theme
+function generateCandles() {
+    const candlesContainer = document.getElementById('candles-container');
+    candlesContainer.innerHTML = '';
+    const numberOfCandles = 12;
+
+    for (let i = 0; i < numberOfCandles; i++) {
+        const candle = document.createElement('div');
+        candle.className = 'candle';
+        candlesContainer.appendChild(candle);
+    }
+}
+
+// Generate crosses for Semana Santa theme
+function generateCrosses() {
+    const crossesContainer = document.getElementById('crosses-container');
+    crossesContainer.innerHTML = '';
+    const numberOfCrosses = 8;
+
+    for (let i = 0; i < numberOfCrosses; i++) {
+        const cross = document.createElement('div');
+        cross.className = 'cross';
+
+        // Random position
+        cross.style.left = Math.random() * 100 + '%';
+        cross.style.top = Math.random() * 100 + '%';
+
+        crossesContainer.appendChild(cross);
+    }
+}
+
 // Initialize decorations based on starting theme
 if (currentTheme === 'dark') {
     generateStars();
@@ -188,6 +224,9 @@ if (currentTheme === 'dark') {
 } else if (currentTheme === 'romeria') {
     generateFlowers();
     generateFlags();
+} else if (currentTheme === 'semana-santa') {
+    generateCandles();
+    generateCrosses();
 }
 
 // === MESSAGE HANDLING ===
